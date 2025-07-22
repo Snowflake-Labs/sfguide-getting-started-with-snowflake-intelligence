@@ -1,0 +1,1 @@
+# sfguide-getting-started-with-snowflake-intelligence
