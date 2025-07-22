@@ -5,16 +5,16 @@ create or replace role snowflake_intelligence_admin;
 set current_user = (SELECT CURRENT_USER());   
 grant role snowflake_intelligence_admin to user IDENTIFIER($current_user);
 
-create or replace database dash_db_swt_2025;
+create or replace database dash_db_si;
 create or replace schema retail;
-create or replace warehouse dash_wh_swt_2025 with warehouse_size='LARGE';
+create or replace warehouse dash_wh_si with warehouse_size='LARGE';
 
 create or replace database snowflake_intelligence;
 create or replace schema snowflake_intelligence.agents;
 
-use database dash_db_swt_2025;
+use database dash_db_si;
 use schema retail;
-use warehouse dash_wh_swt_2025;
+use warehouse dash_wh_si;
 
 create or replace file format swt_csvformat  
   skip_header = 1  
@@ -101,11 +101,11 @@ copy into SUPPORT_CASES
 create or replace stage semantic_models encryption = (TYPE = 'SNOWFLAKE_SSE') directory = ( ENABLE = true );
 
 grant usage on warehouse compute_wh to role snowflake_intelligence_admin;
-grant ownership on database dash_db_swt_2025 to role snowflake_intelligence_admin;
-grant ownership on schema dash_db_swt_2025.retail to role snowflake_intelligence_admin;
+grant ownership on database dash_db_si to role snowflake_intelligence_admin;
+grant ownership on schema dash_db_si.retail to role snowflake_intelligence_admin;
 grant ownership on database snowflake_intelligence to role snowflake_intelligence_admin;
 grant ownership on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
-grant ownership on warehouse dash_wh_swt_2025 to role snowflake_intelligence_admin;
+grant ownership on warehouse dash_wh_si to role snowflake_intelligence_admin;
 grant ownership on stage semantic_models to role snowflake_intelligence_admin;
 
 grant ownership on table MARKETING_CAMPAIGN_METRICS to role snowflake_intelligence_admin;
@@ -115,7 +115,7 @@ grant ownership on table SOCIAL_MEDIA to role snowflake_intelligence_admin;
 grant ownership on table SUPPORT_CASES to role snowflake_intelligence_admin;
 
 alter user set default_role = snowflake_intelligence_admin;
-alter user set default_warehouse = dash_wh_swt_2025;
+alter user set default_warehouse = dash_wh_si;
 
-select * from dash_db_swt_2025.retail.MARKETING_CAMPAIGN_METRICS;
+select * from dash_db_si.retail.MARKETING_CAMPAIGN_METRICS;
 
