@@ -1,1 +1,1 @@
-# sfguide-getting-started-with-snowflake-intelligence
+# Getting Started with Snowflake Intelligence
