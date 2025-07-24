@@ -2,7 +2,7 @@ name: Sales And Marketing Data
 tables:
   - name: MARKETING_CAMPAIGN_METRICS
     base_table:
-      database: DASH_DB_SWT_2025
+      database: DASH_DB_SI
       schema: RETAIL
       table: MARKETING_CAMPAIGN_METRICS
     primary_key:
@@ -88,7 +88,7 @@ tables:
           - '2025-06-17'
   - name: PRODUCTS
     base_table:
-      database: DASH_DB_SWT_2025
+      database: DASH_DB_SI
       schema: RETAIL
       table: PRODUCTS
     primary_key:
@@ -147,7 +147,7 @@ tables:
           - Fitness Item 3
   - name: SALES
     base_table:
-      database: DASH_DB_SWT_2025
+      database: DASH_DB_SI
       schema: RETAIL
       table: SALES
     dimensions:
@@ -239,7 +239,7 @@ tables:
           - '2025-05-18'
   - name: SOCIAL_MEDIA
     base_table:
-      database: DASH_DB_SWT_2025
+      database: DASH_DB_SI
       schema: RETAIL
       table: SOCIAL_MEDIA
     dimensions:
