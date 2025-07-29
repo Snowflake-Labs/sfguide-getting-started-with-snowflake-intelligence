@@ -1,4 +1,4 @@
-name: Sales And Marketing Data
+name: Sales_And_Marketing_Data
 tables:
   - name: MARKETING_CAMPAIGN_METRICS
     base_table:
