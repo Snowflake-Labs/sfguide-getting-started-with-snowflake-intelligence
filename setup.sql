@@ -4,6 +4,7 @@ create or replace role snowflake_intelligence_admin;
 grant create warehouse on account to role snowflake_intelligence_admin;
 grant create database on account to role snowflake_intelligence_admin;
 grant usage on warehouse compute_wh to role snowflake_intelligence_admin;
+grant create integration on account to role snowflake_intelligence_admin;
 
 set current_user = (SELECT CURRENT_USER());   
 grant role snowflake_intelligence_admin to user IDENTIFIER($current_user);
@@ -107,5 +108,42 @@ copy into SUPPORT_CASES
 
 create or replace stage semantic_models encryption = (TYPE = 'SNOWFLAKE_SSE') directory = ( ENABLE = true );
 
-select * from dash_db_si.retail.MARKETING_CAMPAIGN_METRICS;
+create or replace NOTIFICATION INTEGRATION email_integration
+  TYPE=EMAIL
+  ENABLED=TRUE
+  DEFAULT_SUBJECT = 'Snowflake Intelligence';
+
+create or replace PROCEDURE send_email(
+    recipient_email VARCHAR,
+    subject VARCHAR,
+    body VARCHAR
+)
+RETURNS VARCHAR
+LANGUAGE PYTHON
+RUNTIME_VERSION = '3.12'
+PACKAGES = ('snowflake-snowpark-python')
+HANDLER = 'send_email'
+AS
+$$
+def send_email(session, recipient_email, subject, body):
+    try:
+        # Escape single quotes in the body
+        escaped_body = body.replace("'", "''")
+        
+        # Execute the system procedure call
+        session.sql(f"""
+            CALL SYSTEM$SEND_EMAIL(
+                'email_integration',
+                '{recipient_email}',
+                '{subject}',
+                '{escaped_body}'
+            )
+        """).collect()
+        
+        return "Email sent successfully"
+    except Exception as e:
+        return f"Error sending email: {str(e)}"
+$$;
+
+select 'Congratulations! Snowflake Intelligence setup has completed successfully!' as status;
 
