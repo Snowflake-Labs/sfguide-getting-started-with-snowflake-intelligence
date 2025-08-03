@@ -1,3 +1,44 @@
+-- Summary of objects created in this script:
+--
+-- Roles:
+--   - snowflake_intelligence_admin
+--
+-- Warehouses:
+--   - dash_wh_si
+--
+-- Databases:
+--   - dash_db_si
+--   - snowflake_intelligence
+--
+-- Schemas:
+--   - dash_db_si.retail
+--   - snowflake_intelligence.agents
+--
+-- File Format:
+--   - swt_csvformat
+--
+-- Stages:
+--   - swt_marketing_data_stage
+--   - swt_products_data_stage
+--   - swt_sales_data_stage
+--   - swt_social_media_data_stage
+--   - swt_support_data_stage
+--   - semantic_models
+--
+-- Tables:
+--   - marketing_campaign_metrics
+--   - products
+--   - sales
+--   - social_media
+--   - support_cases
+--
+-- Notification Integration:
+--   - email_integration
+--
+-- Stored Procedure:
+--   - send_email
+
+
 use role accountadmin;
 
 create or replace role snowflake_intelligence_admin;
