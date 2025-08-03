@@ -6,15 +6,15 @@ grant create database on account to role snowflake_intelligence_admin;
 grant usage on warehouse compute_wh to role snowflake_intelligence_admin;
 grant create integration on account to role snowflake_intelligence_admin;
 
-set current_user = (SELECT CURRENT_USER());   
-grant role snowflake_intelligence_admin to user IDENTIFIER($current_user);
+set current_user = (select current_user());   
+grant role snowflake_intelligence_admin to user identifier($current_user);
 alter user set default_role = snowflake_intelligence_admin;
 alter user set default_warehouse = dash_wh_si;
 
 use role snowflake_intelligence_admin;
 create or replace database dash_db_si;
 create or replace schema retail;
-create or replace warehouse dash_wh_si with warehouse_size='LARGE';
+create or replace warehouse dash_wh_si with warehouse_size='large';
 
 create or replace database snowflake_intelligence;
 create or replace schema snowflake_intelligence.agents;
@@ -26,104 +26,104 @@ use warehouse dash_wh_si;
 create or replace file format swt_csvformat  
   skip_header = 1  
   field_optionally_enclosed_by = '"'  
-  type = 'CSV';  
+  type = 'csv';  
   
--- Create table MARKETING_CAMPAIGN_METRICS and load data from S3 bucket
+-- create table marketing_campaign_metrics and load data from s3 bucket
 create or replace stage swt_marketing_data_stage  
   file_format = swt_csvformat  
   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/marketing/';  
   
-create or replace TABLE MARKETING_CAMPAIGN_METRICS (
-	DATE DATE,
-	CATEGORY VARCHAR(16777216),
-	CAMPAIGN_NAME VARCHAR(16777216),
-	IMPRESSIONS NUMBER(38,0),
-	CLICKS NUMBER(38,0)
+create or replace table marketing_campaign_metrics (
+  date date,
+  category varchar(16777216),
+  campaign_name varchar(16777216),
+  impressions number(38,0),
+  clicks number(38,0)
 );
 
-copy into MARKETING_CAMPAIGN_METRICS  
+copy into marketing_campaign_metrics  
   from @swt_marketing_data_stage;
 
--- Create table PRODUCTS and load data from S3 bucket
+-- create table products and load data from s3 bucket
 create or replace stage swt_products_data_stage  
   file_format = swt_csvformat  
   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/product/';  
   
-create or replace TABLE PRODUCTS (
-	PRODUCT_ID NUMBER(38,0),
-	PRODUCT_NAME VARCHAR(16777216),
-	CATEGORY VARCHAR(16777216)
+create or replace table products (
+  product_id number(38,0),
+  product_name varchar(16777216),
+  category varchar(16777216)
 );
 
-copy into PRODUCTS  
+copy into products  
   from @swt_products_data_stage;
 
--- Create table SALES and load data from S3 bucket
+-- create table sales and load data from s3 bucket
 create or replace stage swt_sales_data_stage  
   file_format = swt_csvformat  
   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/sales/';  
   
-create or replace TABLE SALES (
-	DATE DATE,
-	REGION VARCHAR(16777216),
-	PRODUCT_ID NUMBER(38,0),
-	UNITS_SOLD NUMBER(38,0),
-	SALES_AMOUNT NUMBER(38,2)
+create or replace table sales (
+  date date,
+  region varchar(16777216),
+  product_id number(38,0),
+  units_sold number(38,0),
+  sales_amount number(38,2)
 );
 
-copy into SALES  
+copy into sales  
   from @swt_sales_data_stage;
 
--- Create table SOCIAL_MEDIA and load data from S3 bucket
+-- create table social_media and load data from s3 bucket
 create or replace stage swt_social_media_data_stage  
   file_format = swt_csvformat  
   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/social_media/';  
   
-create or replace TABLE SOCIAL_MEDIA (
-	DATE DATE,
-	CATEGORY VARCHAR(16777216),
-	PLATFORM VARCHAR(16777216),
-	INFLUENCER VARCHAR(16777216),
-	MENTIONS NUMBER(38,0)
+create or replace table social_media (
+  date date,
+  category varchar(16777216),
+  platform varchar(16777216),
+  influencer varchar(16777216),
+  mentions number(38,0)
 );
 
-copy into SOCIAL_MEDIA  
+copy into social_media  
   from @swt_social_media_data_stage;
 
--- Create table SUPPORT_CASES and load data from S3 bucket
+-- create table support_cases and load data from s3 bucket
 create or replace stage swt_support_data_stage  
   file_format = swt_csvformat  
   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/support/';  
   
-create or replace TABLE SUPPORT_CASES (
-	ID VARCHAR(16777216),
-	TITLE VARCHAR(16777216),
-	PRODUCT VARCHAR(16777216),
-	TRANSCRIPT VARCHAR(16777216),
-	DATE DATE
+create or replace table support_cases (
+  id varchar(16777216),
+  title varchar(16777216),
+  product varchar(16777216),
+  transcript varchar(16777216),
+  date date
 );
 
-copy into SUPPORT_CASES  
+copy into support_cases  
   from @swt_support_data_stage;
 
-create or replace stage semantic_models encryption = (TYPE = 'SNOWFLAKE_SSE') directory = ( ENABLE = true );
+create or replace stage semantic_models encryption = (type = 'snowflake_sse') directory = ( enable = true );
 
-create or replace NOTIFICATION INTEGRATION email_integration
-  TYPE=EMAIL
-  ENABLED=TRUE
-  DEFAULT_SUBJECT = 'Snowflake Intelligence';
+create or replace notification integration email_integration
+  type=email
+  enabled=true
+  default_subject = 'snowflake intelligence';
 
-create or replace PROCEDURE send_email(
-    recipient_email VARCHAR,
-    subject VARCHAR,
-    body VARCHAR
+create or replace procedure send_email(
+    recipient_email varchar,
+    subject varchar,
+    body varchar
 )
-RETURNS VARCHAR
-LANGUAGE PYTHON
-RUNTIME_VERSION = '3.12'
-PACKAGES = ('snowflake-snowpark-python')
-HANDLER = 'send_email'
-AS
+returns varchar
+language python
+runtime_version = '3.12'
+packages = ('snowflake-snowpark-python')
+handler = 'send_email'
+as
 $$
 def send_email(session, recipient_email, subject, body):
     try:
@@ -146,4 +146,3 @@ def send_email(session, recipient_email, subject, body):
 $$;
 
 select 'Congratulations! Snowflake Intelligence setup has completed successfully!' as status;
-
