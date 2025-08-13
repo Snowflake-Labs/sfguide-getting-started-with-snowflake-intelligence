@@ -60,7 +60,7 @@ create or replace warehouse dash_wh_si with warehouse_size='large';
 create database if not exists snowflake_intelligence;
 create schema if not exists snowflake_intelligence.agents;
 
-grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin
+grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
 
 use database dash_db_si;
 use schema retail;
