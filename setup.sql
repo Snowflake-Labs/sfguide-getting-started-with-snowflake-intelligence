@@ -179,7 +179,8 @@ def send_email(session, recipient_email, subject, body):
                 'email_integration',
                 '{recipient_email}',
                 '{subject}',
-                '{escaped_body}'
+                '{escaped_body}',
+                'text/html'
             )
         """).collect()
         
