@@ -44,7 +44,6 @@ use role accountadmin;
 create or replace role snowflake_intelligence_admin;
 grant create warehouse on account to role snowflake_intelligence_admin;
 grant create database on account to role snowflake_intelligence_admin;
-grant usage on warehouse compute_wh to role snowflake_intelligence_admin;
 grant create integration on account to role snowflake_intelligence_admin;
 
 set current_user = (select current_user());   
