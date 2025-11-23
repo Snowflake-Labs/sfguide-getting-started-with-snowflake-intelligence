@@ -1,41 +1,41 @@
 product_id,product_name,category
-1,Fitness Item 1,Fitness Wear
-2,Fitness Item 2,Fitness Wear
-3,Fitness Item 3,Fitness Wear
-4,Fitness Item 4,Fitness Wear
-5,Fitness Item 5,Fitness Wear
-6,Fitness Item 6,Fitness Wear
-7,Fitness Item 7,Fitness Wear
-8,Fitness Item 8,Fitness Wear
-9,Fitness Item 9,Fitness Wear
-10,Fitness Item 10,Fitness Wear
-11,Casual Item 1,Casual Wear
-12,Casual Item 2,Casual Wear
-13,Casual Item 3,Casual Wear
-14,Casual Item 4,Casual Wear
-15,Casual Item 5,Casual Wear
-16,Casual Item 6,Casual Wear
-17,Casual Item 7,Casual Wear
-18,Casual Item 8,Casual Wear
-19,Casual Item 9,Casual Wear
-20,Casual Item 10,Casual Wear
-21,Accessories Item 1,Accessories
-22,Accessories Item 2,Accessories
-23,Accessories Item 3,Accessories
-24,Accessories Item 4,Accessories
-25,Accessories Item 5,Accessories
-26,Accessories Item 6,Accessories
-27,Accessories Item 7,Accessories
-28,Accessories Item 8,Accessories
-29,Accessories Item 9,Accessories
-30,Accessories Item 10,Accessories
-31,Footwear Item 1,Footwear
-32,Footwear Item 2,Footwear
-33,Footwear Item 3,Footwear
-34,Footwear Item 4,Footwear
-35,Footwear Item 5,Footwear
-36,Footwear Item 6,Footwear
-37,Footwear Item 7,Footwear
-38,Footwear Item 8,Footwear
-39,Footwear Item 9,Footwear
-40,Footwear Item 10,Footwear
+1,フィットネス アイテム 1,フィットネスウェア
+2,フィットネス アイテム 2,フィットネスウェア
+3,フィットネス アイテム 3,フィットネスウェア
+4,フィットネス アイテム 4,フィットネスウェア
+5,フィットネス アイテム 5,フィットネスウェア
+6,フィットネス アイテム 6,フィットネスウェア
+7,フィットネス アイテム 7,フィットネスウェア
+8,フィットネス アイテム 8,フィットネスウェア
+9,フィットネス アイテム 9,フィットネスウェア
+10,フィットネス アイテム 10,フィットネスウェア
+11,カジュアル アイテム 1,カジュアルウェア
+12,カジュアル アイテム 2,カジュアル
+13,カジュアル アイテム 3,カジュアルウェア
+14,カジュアル アイテム 4,カジュアルウェア
+15,カジュアル アイテム 5,カジュアルウェア
+16,カジュアル アイテム 6,カジュアルウェア
+17,カジュアル アイテム 7,カジュアルウェア
+18,カジュアル アイテム 8,カジュアルウェア
+19,カジュアル アイテム 9,カジュアルウェア
+20,カジュアル アイテム 10,カジュアルウェア
+21,アクセサリ アイテム 1,アクセサリ
+22,アクセサリ アイテム 2,アクセサリ
+23,アクセサリ アイテム 3,アクセサリ
+24,アクセサリ アイテム 4,アクセサリ
+25,アクセサリ アイテム 5,アクセサリ
+26,アクセサリ アイテム 6,アクセサリ
+27,アクセサリ アイテム 7,アクセサリ
+28,アクセサリ アイテム 8,アクセサリ
+29,アクセサリ アイテム 9,アクセサリ
+30,アクセサリ アイテム 10,アクセサリ
+31,フットウェア アイテム 1,Footwear
+32,フットウェア アイテム 2,Footwear
+33,フットウェア アイテム 3,Footwear
+34,フットウェア アイテム 4,Footwear
+35,フットウェア アイテム 5,Footwear
+36,フットウェア アイテム 6,Footwear
+37,フットウェア アイテム 7,Footwear
+38,フットウェア アイテム 8,Footwear
+39,フットウェア アイテム 9,Footwear
+40,フットウェア アイテム 10,Footwear
