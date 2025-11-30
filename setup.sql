@@ -193,4 +193,4 @@ CREATE OR REPLACE procedure send_email(
 
 ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
 
-SELECT 'Congratulations! Snowflake Intelligence setup has completed successfully!' as status;
+SELECT 'Congratulations! Snowflake Intelligence セットアップは無事完了しました！' as status;
