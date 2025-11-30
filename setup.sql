@@ -4,14 +4,14 @@
 --   - snowflake_intelligence_admin
 --
 -- Warehouses:
---   - dash_wh_si
+--   - WH_SI_JP
 --
 -- Databases:
---   - dash_db_si
+--   - DB_SI_JP
 --   - snowflake_intelligence
 --
 -- Schemas:
---   - dash_db_si.retail
+--   - DB_SI_JP.retail
 --   - snowflake_intelligence.agents
 --
 -- File Format:
@@ -39,43 +39,44 @@
 --   - send_email
 
 
-use role accountadmin;
+USE ROLE accountadmin;
 
-create or replace role snowflake_intelligence_admin;
-grant create warehouse on account to role snowflake_intelligence_admin;
-grant create database on account to role snowflake_intelligence_admin;
-grant create integration on account to role snowflake_intelligence_admin;
+CREATE OR REPLACE ROLE snowflake_intelligence_admin;
+GRANT CREATE WAREHOUSE on account to role snowflake_intelligence_admin;
+GRANT CREATE DATABASE on account to role snowflake_intelligence_admin;
+GRANT CREATE INTEGRATION on account to role snowflake_intelligence_admin;
 
-set current_user = (select current_user());   
-grant role snowflake_intelligence_admin to user identifier($current_user);
-alter user set default_role = snowflake_intelligence_admin;
-alter user set default_warehouse = dash_wh_si;
+SET current_user = (select current_user());   
+GRANT ROLE snowflake_intelligence_admin to user identifier($current_user);
+ALTER USER SET default_role = snowflake_intelligence_admin;
+ALTER USER SET default_warehouse = WH_SI_JP;
 
-use role snowflake_intelligence_admin;
-create or replace database dash_db_si;
-create or replace schema retail;
-create or replace warehouse dash_wh_si with warehouse_size='large';
+USE ROLE snowflake_intelligence_admin;
+CREATE OR REPLACE DATABASE DB_SI_JP;
+USE DATABASE DB_SI_JP;
+CREATE OR REPLACE SCHEMA RETAIL;
+CREATE OR REPLACE WAREHOUSE WH_SI_JP WITH WAREHOUSE_SIZE = 'large';
 
-create database if not exists snowflake_intelligence;
-create schema if not exists snowflake_intelligence.agents;
+CREATE DATABASE IF NOT EXISTS snowflake_intelligence;
+CREATE SCHEMA IF NOT EXISTS snowflake_intelligence.agents;
 
-grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
+GRANT CREATE AGENT on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
 
-use database dash_db_si;
-use schema retail;
-use warehouse dash_wh_si;
+USE SCHEMA RETAIL;
+USE WAREHOUSE WH_SI_JP;
 
-create or replace file format swt_csvformat  
+CREATE OR REPLACE file format swt_csvformat  
   skip_header = 1  
   field_optionally_enclosed_by = '"'  
-  type = 'csv';  
+  type = 'csv'
+;  
   
 -- create table marketing_campaign_metrics and load data from s3 bucket
-create or replace stage swt_marketing_data_stage  
+CREATE OR REPLACE stage swt_marketing_data_stage  
   file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/marketing/';  
+  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence_ja/marketing/';  
   
-create or replace table marketing_campaign_metrics (
+CREATE OR REPLACE table marketing_campaign_metrics (
   date date,
   category varchar(16777216),
   campaign_name varchar(16777216),
@@ -83,29 +84,29 @@ create or replace table marketing_campaign_metrics (
   clicks number(38,0)
 );
 
-copy into marketing_campaign_metrics  
-  from @swt_marketing_data_stage;
+COPY INTO marketing_campaign_metrics  
+  FROM @swt_marketing_data_stage;
 
 -- create table products and load data from s3 bucket
-create or replace stage swt_products_data_stage  
+CREATE OR REPLACE stage swt_products_data_stage  
   file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/product/';  
+  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence_ja/product/';  
   
-create or replace table products (
+CREATE OR REPLACE table products (
   product_id number(38,0),
   product_name varchar(16777216),
   category varchar(16777216)
 );
 
-copy into products  
+COPY INTO products  
   from @swt_products_data_stage;
 
 -- create table sales and load data from s3 bucket
-create or replace stage swt_sales_data_stage  
+CREATE OR REPLACE stage swt_sales_data_stage  
   file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/sales/';  
+  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligenc_ja/sales/';  
   
-create or replace table sales (
+CREATE OR REPLACE table sales (
   date date,
   region varchar(16777216),
   product_id number(38,0),
@@ -113,15 +114,15 @@ create or replace table sales (
   sales_amount number(38,2)
 );
 
-copy into sales  
-  from @swt_sales_data_stage;
+COPY INTO sales  
+  FROM @swt_sales_data_stage;
 
 -- create table social_media and load data from s3 bucket
-create or replace stage swt_social_media_data_stage  
+CREATE OR REPLACE stage swt_social_media_data_stage  
   file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/social_media/';  
+  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence_ja/social_media/';  
   
-create or replace table social_media (
+CREATE OR REPLACE table social_media (
   date date,
   category varchar(16777216),
   platform varchar(16777216),
@@ -129,15 +130,15 @@ create or replace table social_media (
   mentions number(38,0)
 );
 
-copy into social_media  
-  from @swt_social_media_data_stage;
+COPY INTO social_media  
+  FROM @swt_social_media_data_stage;
 
 -- create table support_cases and load data from s3 bucket
-create or replace stage swt_support_data_stage  
+CREATE OR REPLACE stage swt_support_data_stage  
   file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/support/';  
+  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence_ja/support/';  
   
-create or replace table support_cases (
+CREATE OR REPLACE table support_cases (
   id varchar(16777216),
   title varchar(16777216),
   product varchar(16777216),
@@ -145,49 +146,51 @@ create or replace table support_cases (
   date date
 );
 
-copy into support_cases  
-  from @swt_support_data_stage;
+COPY INTO support_cases  
+  FROM @swt_support_data_stage
+;
 
-create or replace stage semantic_models encryption = (type = 'snowflake_sse') directory = ( enable = true );
+CREATE OR REPLACE stage semantic_models encryption = (type = 'snowflake_sse') directory = ( enable = true );
 
-create or replace notification integration email_integration
+CREATE OR REPLACE notification integration email_integration
   type=email
   enabled=true
-  default_subject = 'snowflake intelligence';
+  default_subject = 'snowflake intelligence'
+;
 
-create or replace procedure send_email(
-    recipient_email varchar,
-    subject varchar,
-    body varchar
-)
-returns varchar
-language python
-runtime_version = '3.12'
-packages = ('snowflake-snowpark-python')
-handler = 'send_email'
-as
-$$
-def send_email(session, recipient_email, subject, body):
-    try:
-        # Escape single quotes in the body
-        escaped_body = body.replace("'", "''")
-        
-        # Execute the system procedure call
-        session.sql(f"""
-            CALL SYSTEM$SEND_EMAIL(
-                'email_integration',
-                '{recipient_email}',
-                '{subject}',
-                '{escaped_body}',
-                'text/html'
-            )
-        """).collect()
-        
-        return "Email sent successfully"
-    except Exception as e:
-        return f"Error sending email: {str(e)}"
-$$;
+CREATE OR REPLACE procedure send_email(
+      recipient_email varchar,
+      subject varchar,
+      body varchar
+  )
+  returns varchar
+  language python
+  runtime_version = '3.12'
+  packages = ('snowflake-snowpark-python')
+  handler = 'send_email'
+  AS $$
+    def send_email(session, recipient_email, subject, body):
+        try:
+            # Escape single quotes in the body
+            escaped_body = body.replace("'", "''")
+  
+            # Execute the system procedure call
+            session.sql(f"""
+                CALL SYSTEM$SEND_EMAIL(
+                    'email_integration',
+                    '{recipient_email}',
+                    '{subject}',
+                    '{escaped_body}',
+                    'text/html'
+                )
+            """).collect()
+  
+            return "Email sent successfully"
+        except Exception as e:
+            return f"Error sending email: {str(e)}"
+  $$
+;
 
 ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
 
-select 'Congratulations! Snowflake Intelligence setup has completed successfully!' as status;
+SELECT 'Congratulations! Snowflake Intelligence セットアップは無事完了しました！' as status;

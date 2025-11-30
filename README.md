@@ -1,4 +1,4 @@
-# Getting Started with Snowflake Intelligence 日本語データ
+# Getting Started with Snowflake Intelligence 日本語
 
 ## Overview
 
