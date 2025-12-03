@@ -105,7 +105,7 @@ COPY INTO products
 -- create table sales and load data from s3 bucket
 CREATE OR REPLACE stage swt_sales_data_stage  
   file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligenc_ja/sales/';  
+  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence_ja/sales/';  
   
 CREATE OR REPLACE table sales (
   date date,
@@ -159,7 +159,7 @@ CREATE OR REPLACE notification integration email_integration
   default_subject = 'snowflake intelligence'
 ;
 
-create or replace procedure send_email(
+CREATE OR REPLACE PROCEDURE send_email(
     recipient_email varchar,
     subject varchar,
     body varchar
