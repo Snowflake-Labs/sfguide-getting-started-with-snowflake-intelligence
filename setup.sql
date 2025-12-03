@@ -62,6 +62,7 @@ CREATE SCHEMA IF NOT EXISTS snowflake_intelligence.agents;
 
 GRANT CREATE AGENT on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
 
+USE DATABASE DB_SI_JP;
 USE SCHEMA RETAIL;
 USE WAREHOUSE WH_SI_JP;
 
@@ -158,38 +159,38 @@ CREATE OR REPLACE notification integration email_integration
   default_subject = 'snowflake intelligence'
 ;
 
-CREATE OR REPLACE procedure send_email(
-      recipient_email varchar,
-      subject varchar,
-      body varchar
-  )
-  returns varchar
-  language python
-  runtime_version = '3.12'
-  packages = ('snowflake-snowpark-python')
-  handler = 'send_email'
-  AS $$
-    def send_email(session, recipient_email, subject, body):
-        try:
-            # Escape single quotes in the body
-            escaped_body = body.replace("'", "''")
-  
-            # Execute the system procedure call
-            session.sql(f"""
-                CALL SYSTEM$SEND_EMAIL(
-                    'email_integration',
-                    '{recipient_email}',
-                    '{subject}',
-                    '{escaped_body}',
-                    'text/html'
-                )
-            """).collect()
-  
-            return "Email sent successfully"
-        except Exception as e:
-            return f"Error sending email: {str(e)}"
-  $$
-;
+create or replace procedure send_email(
+    recipient_email varchar,
+    subject varchar,
+    body varchar
+)
+returns varchar
+language python
+runtime_version = '3.12'
+packages = ('snowflake-snowpark-python')
+handler = 'send_email'
+as
+$$
+def send_email(session, recipient_email, subject, body):
+    try:
+        # Escape single quotes in the body
+        escaped_body = body.replace("'", "''")
+        
+        # Execute the system procedure call
+        session.sql(f"""
+            CALL SYSTEM$SEND_EMAIL(
+                'email_integration',
+                '{recipient_email}',
+                '{subject}',
+                '{escaped_body}',
+                'text/html'
+            )
+        """).collect()
+        
+        return "Email sent successfully"
+    except Exception as e:
+        return f"Error sending email: {str(e)}"
+$$;
 
 ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
 
