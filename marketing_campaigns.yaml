@@ -2,7 +2,7 @@ name: Sales_And_Marketing_Data
 tables:
   - name: MARKETING_CAMPAIGN_METRICS
     base_table:
-      database: DASH_DB_SI
+      database: DB_SI_JP
       schema: RETAIL
       table: MARKETING_CAMPAIGN_METRICS
     primary_key:
@@ -17,7 +17,7 @@ tables:
           - advertisement_name
           - campaign_title
           - promotion_name
-        description: The name of the marketing campaign, which can be used to identify and analyze the performance of specific promotional initiatives.
+        description: マーケティングキャンペーンの名前。特定のプロモーション施策のパフォーマンスを識別・分析するために使用できます。
         expr: CAMPAIGN_NAME
         data_type: VARCHAR(16777216)
         sample_values:
@@ -32,7 +32,7 @@ tables:
           - class
           - kind
           - genre
-        description: The category of the marketing campaign, which represents the product or service being promoted, such as a specific industry or product line.
+        description: マーケティングキャンペーンのカテゴリ。プロモーション対象の製品またはサービスを表し、特定の業種や製品ラインなどを示します。
         expr: CATEGORY
         data_type: VARCHAR(16777216)
         sample_values:
@@ -46,7 +46,7 @@ tables:
           - button_clicks
           - selections
           - hits
-        description: The total number of times users clicked on an advertisement or promotional link as part of a marketing campaign.
+        description: マーケティングキャンペーンにおいて、ユーザーが広告またはプロモーションリンクをクリックした合計回数。
         expr: CLICKS
         data_type: NUMBER(38,0)
         sample_values:
@@ -63,7 +63,7 @@ tables:
           - exposures
           - ad_views_count
           - views_count
-        description: The total number of times an ad was displayed to users during a marketing campaign.
+        description: マーケティングキャンペーン期間中に広告がユーザーに表示された合計回数。
         expr: IMPRESSIONS
         data_type: NUMBER(38,0)
         sample_values:
@@ -79,7 +79,7 @@ tables:
           - datestamp
           - calendar_day
           - date_value
-        description: Date on which the marketing campaign metrics were recorded.
+        description: マーケティングキャンペーンの指標が記録された日付。
         expr: DATE
         data_type: DATE
         sample_values:
@@ -88,7 +88,7 @@ tables:
           - '2025-06-17'
   - name: PRODUCTS
     base_table:
-      database: DASH_DB_SI
+      database: DB_SI_JP
       schema: RETAIL
       table: PRODUCTS
     primary_key:
@@ -107,7 +107,7 @@ tables:
           - product_group
           - product_category
           - product_classification
-        description: 'The CATEGORY column represents the type of product being sold, which can be classified into three main categories: Fitness Wear, Casual Wear, and Accessories.'
+        description: CATEGORYカラムは販売商品の種類を表し、Fitness Wear（フィットネスウェア）、Casual Wear（カジュアルウェア）、Accessories（アクセサリー）の3つの主要カテゴリに分類されます。
         expr: CATEGORY
         data_type: VARCHAR(16777216)
         sample_values:
@@ -123,7 +123,7 @@ tables:
           - product_code
           - sku
           - product_identifier
-        description: Unique identifier for each product in the catalog.
+        description: カタログ内の各商品を一意に識別するための識別子。
         expr: PRODUCT_ID
         data_type: NUMBER(38,0)
         sample_values:
@@ -138,7 +138,7 @@ tables:
           - product_description
           - product_label
           - item_label
-        description: The name of the product being sold, such as a specific type of fitness equipment or accessory.
+        description: 販売商品の名称。フィットネス機器やアクセサリーなど、特定の商品タイプを示します。
         expr: PRODUCT_NAME
         data_type: VARCHAR(16777216)
         sample_values:
@@ -147,7 +147,7 @@ tables:
           - Fitness Item 3
   - name: SALES
     base_table:
-      database: DASH_DB_SI
+      database: DB_SI_JP
       schema: RETAIL
       table: SALES
     dimensions:
@@ -159,7 +159,7 @@ tables:
           - item_number
           - sku
           - product_key
-        description: Unique identifier for a product sold.
+        description: 販売商品の一意識別子。
         expr: PRODUCT_ID
         data_type: NUMBER(38,0)
         sample_values:
@@ -178,7 +178,7 @@ tables:
           - county
           - geographic_area
           - market_area
-        description: Geographic region where the sale was made.
+        description: 販売が行われた地理的地域。
         expr: REGION
         data_type: VARCHAR(16777216)
         sample_values:
@@ -196,7 +196,7 @@ tables:
           - total_revenue
           - sales_figure
           - sales_number
-        description: The total amount of sales generated from a transaction or order.
+        description: 取引または注文によって生成された販売額の合計。
         expr: SALES_AMOUNT
         data_type: NUMBER(38,2)
         sample_values:
@@ -211,7 +211,7 @@ tables:
           - units_purchased
           - volume_sold
           - sales_quantity
-        description: The total quantity of products sold.
+        description: 販売された商品の合計数量。
         expr: UNITS_SOLD
         data_type: NUMBER(38,0)
         sample_values:
@@ -230,7 +230,7 @@ tables:
           - entry_date
           - record_date
           - log_date
-        description: Date of sale, representing the calendar date when a transaction occurred.
+        description: 販売が行われた日付。取引が発生したカレンダー日を表します。
         expr: DATE
         data_type: DATE
         sample_values:
@@ -239,7 +239,7 @@ tables:
           - '2025-05-18'
   - name: SOCIAL_MEDIA
     base_table:
-      database: DASH_DB_SI
+      database: DB_SI_JP
       schema: RETAIL
       table: SOCIAL_MEDIA
     dimensions:
@@ -253,7 +253,7 @@ tables:
           - label
           - section
           - class
-        description: The category of social media content, representing the type of product or service being promoted, such as fitness-related clothing and accessories.
+        description: ソーシャルメディアコンテンツのカテゴリ。フィットネス関連の衣類やアクセサリーなど、プロモーション対象の製品またはサービスを示します。
         expr: CATEGORY
         data_type: VARCHAR(16777216)
         sample_values:
@@ -268,7 +268,7 @@ tables:
           - thought_leader
           - industry_expert
           - brand_ambassador
-        description: The name of the social media influencer promoting the product or service.
+        description: ソーシャルメディアインフルエンサーの名前。製品またはサービスをプロモーションするために使用されるソーシャルメディア上の有名人を示します。
         expr: INFLUENCER
         data_type: VARCHAR(16777216)
         sample_values:
@@ -281,7 +281,7 @@ tables:
           - social_media_channel
           - network
           - outlet
-        description: The social media platform where the activity or engagement took place.
+        description: ソーシャルメディアプラットフォーム。活動または関与が行われたソーシャルメディアのプラットフォームを示します。
         expr: PLATFORM
         data_type: VARCHAR(16777216)
         sample_values:
@@ -300,7 +300,7 @@ tables:
           - shoutouts
           - credits
           - acknowledgments
-        description: The number of times a brand, product, or keyword is mentioned on social media platforms.
+        description: ブランド、製品、またはキーワードがソーシャルメディアプラットフォームで何回言及されたかを示す数値。
         expr: MENTIONS
         data_type: NUMBER(38,0)
         sample_values:
@@ -316,7 +316,7 @@ tables:
           - posting_date
           - publication_date
           - entry_date
-        description: Date on which social media data was collected or posted.
+        description: ソーシャルメディアデータが収集または投稿された日付。
         expr: DATE
         data_type: DATE
         sample_values:
@@ -343,7 +343,7 @@ relationships:
 verified_queries:
   - name: sales
     question: |+
-      Show me the trend of sales by product category between June 2025 and August 2025
+      商品カテゴリごとの6月から8月までの売上トレンドを表示してください。
 
     use_as_onboarding_question: false
     sql: WITH monthly_sales AS (SELECT p.category, DATE_TRUNC('MONTH', s.date) AS month, SUM(s.sales_amount) AS monthly_sales FROM sales AS s INNER JOIN products AS p ON s.product_id = p.product_id WHERE s.date >= '2025-06-01' AND s.date < '2025-09-01' GROUP BY p.category, DATE_TRUNC('MONTH', s.date)) SELECT category, month, monthly_sales FROM monthly_sales ORDER BY category, month
