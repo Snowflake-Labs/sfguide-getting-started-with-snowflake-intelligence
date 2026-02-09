@@ -51,7 +51,7 @@ create or replace role snowflake_intelligence_admin;
 grant create warehouse on account to role snowflake_intelligence_admin;
 grant create database on account to role snowflake_intelligence_admin;
 grant create integration on account to role snowflake_intelligence_admin;
-
+-- grant use database to role snowflake_intelligence_admin;
 set current_user = (select current_user());   
 grant role snowflake_intelligence_admin to user identifier($current_user);
 alter user set default_role = snowflake_intelligence_admin;
@@ -62,8 +62,14 @@ create or replace database dash_db_si;
 create or replace schema retail;
 create or replace warehouse dash_wh_si with warehouse_size='large';
 
+use role accountadmin;
 create database if not exists snowflake_intelligence;
 create schema if not exists snowflake_intelligence.agents;
+GRANT USAGE ON DATABASE snowflake_intelligence TO ROLE snowflake_intelligence_admin;
+GRANT CREATE SCHEMA ON DATABASE snowflake_intelligence TO ROLE snowflake_intelligence_admin;
+use role snowflake_intelligence_admin;
+
+
 
 grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
 
