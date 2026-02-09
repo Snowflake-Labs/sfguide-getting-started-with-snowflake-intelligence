@@ -25,6 +25,12 @@
 --   - swt_support_data_stage
 --   - semantic_models
 --
+-- Git Integration:
+--   - snowflake_labs_si_git_api_integration
+--
+-- Git Repository:
+--   - snowflake_labs_sfguide_si_repo
+--
 -- Tables:
 --   - marketing_campaign_metrics
 --   - products
@@ -149,6 +155,21 @@ copy into support_cases
   from @swt_support_data_stage;
 
 create or replace stage semantic_models encryption = (type = 'snowflake_sse') directory = ( enable = true );
+
+-- create git api integration and repository
+create or replace api integration snowflake_labs_si_git_api_integration
+  api_provider = git_https_api
+  api_allowed_prefixes = ('https://github.com/Snowflake-Labs')
+  enabled = true;
+
+create or replace git repository snowflake_labs_sfguide_si_repo
+  api_integration = snowflake_labs_si_git_api_integration
+  origin = 'https://github.com/Snowflake-Labs/sfguide-getting-started-with-snowflake-intelligence';
+
+-- copy semantic model from git repo to stage
+copy files into @semantic_models
+  from @snowflake_labs_sfguide_si_repo/branches/main/
+  files = ('marketing_campaigns.yaml');
 
 create or replace notification integration email_integration
   type=email
