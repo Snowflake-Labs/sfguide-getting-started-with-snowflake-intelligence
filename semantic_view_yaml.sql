@@ -1,0 +1,295 @@
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN;  
+USE WAREHOUSE DASH_WH_SI;
+
+CALL SYSTEM$CREATE_SEMANTIC_VIEW_FROM_YAML(
+  'DASH_DB_SI.RETAIL',
+  $$
+name: Sales_And_Marketing_Data
+tables:
+  - name: MARKETING_CAMPAIGN_METRICS
+    base_table:
+      database: DASH_DB_SI
+      schema: RETAIL
+      table: MARKETING_CAMPAIGN_METRICS
+    primary_key:
+      columns:
+        - CATEGORY
+    dimensions:
+      - name: CAMPAIGN_NAME
+        synonyms:
+          - ad_campaign
+          - marketing_campaign
+          - promo_name
+          - advertisement_name
+          - campaign_title
+          - promotion_name
+        description: The name of the marketing campaign, which can be used to identify and analyze the performance of specific promotional initiatives.
+        expr: CAMPAIGN_NAME
+        data_type: VARCHAR(16777216)
+      - name: CATEGORY
+        synonyms:
+          - type
+          - classification
+          - group
+          - label
+          - sector
+          - class
+          - kind
+          - genre
+        description: The category of the marketing campaign, which represents the product or service being promoted, such as a specific industry or product line.
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+    facts:
+      - name: CLICKS
+        synonyms:
+          - click_throughs
+          - link_clicks
+          - ad_clicks
+          - button_clicks
+          - selections
+          - hits
+        description: The total number of times users clicked on an advertisement or promotional link as part of a marketing campaign.
+        expr: CLICKS
+        data_type: NUMBER(38,0)
+      - name: IMPRESSIONS
+        synonyms:
+          - views
+          - ad_views
+          - ad_exposures
+          - display_count
+          - ad_impressions
+          - exposures
+          - ad_views_count
+          - views_count
+        description: The total number of times an ad was displayed to users during a marketing campaign.
+        expr: IMPRESSIONS
+        data_type: NUMBER(38,0)
+    time_dimensions:
+      - name: DATE
+        synonyms:
+          - day
+          - calendar_date
+          - timestamp
+          - datestamp
+          - calendar_day
+          - date_value
+        description: Date on which the marketing campaign metrics were recorded.
+        expr: DATE
+        data_type: DATE
+  - name: PRODUCTS
+    base_table:
+      database: DASH_DB_SI
+      schema: RETAIL
+      table: PRODUCTS
+    primary_key:
+      columns:
+        - PRODUCT_ID
+    dimensions:
+      - name: CATEGORY
+        synonyms:
+          - type
+          - classification
+          - group
+          - genre
+          - kind
+          - class
+          - product_type
+          - product_group
+          - product_category
+          - product_classification
+        description: 'The CATEGORY column represents the type of product being sold, which can be classified into three main categories: Fitness Wear, Casual Wear, and Accessories.'
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+      - name: PRODUCT_ID
+        synonyms:
+          - product_key
+          - item_id
+          - product_number
+          - item_number
+          - product_code
+          - sku
+          - product_identifier
+        description: Unique identifier for each product in the catalog.
+        expr: PRODUCT_ID
+        data_type: NUMBER(38,0)
+      - name: PRODUCT_NAME
+        synonyms:
+          - item_name
+          - product_title
+          - item_title
+          - product_description
+          - product_label
+          - item_label
+        description: The name of the product being sold, such as a specific type of fitness equipment or accessory.
+        expr: PRODUCT_NAME
+        data_type: VARCHAR(16777216)
+  - name: SALES
+    base_table:
+      database: DASH_DB_SI
+      schema: RETAIL
+      table: SALES
+    dimensions:
+      - name: PRODUCT_ID
+        synonyms:
+          - product_code
+          - item_id
+          - product_number
+          - item_number
+          - sku
+          - product_key
+        description: Unique identifier for a product sold.
+        expr: PRODUCT_ID
+        data_type: NUMBER(38,0)
+      - name: REGION
+        synonyms:
+          - area
+          - territory
+          - zone
+          - district
+          - location
+          - province
+          - state
+          - county
+          - geographic_area
+          - market_area
+        description: Geographic region where the sale was made.
+        expr: REGION
+        data_type: VARCHAR(16777216)
+    facts:
+      - name: SALES_AMOUNT
+        synonyms:
+          - total_sales
+          - revenue
+          - sales_total
+          - sales_value
+          - sales_revenue
+          - total_revenue
+          - sales_figure
+          - sales_number
+        description: The total amount of sales generated from a transaction or order.
+        expr: SALES_AMOUNT
+        data_type: NUMBER(38,2)
+      - name: UNITS_SOLD
+        synonyms:
+          - quantity_sold
+          - items_sold
+          - sales_volume
+          - units_purchased
+          - volume_sold
+          - sales_quantity
+        description: The total quantity of products sold.
+        expr: UNITS_SOLD
+        data_type: NUMBER(38,0)
+    time_dimensions:
+      - name: DATE
+        synonyms:
+          - day
+          - calendar_date
+          - date_field
+          - calendar_day
+          - timestamp
+          - date_value
+          - entry_date
+          - record_date
+          - log_date
+        description: Date of sale, representing the calendar date when a transaction occurred.
+        expr: DATE
+        data_type: DATE
+  - name: SOCIAL_MEDIA
+    base_table:
+      database: DASH_DB_SI
+      schema: RETAIL
+      table: SOCIAL_MEDIA
+    dimensions:
+      - name: CATEGORY
+        synonyms:
+          - type
+          - classification
+          - group
+          - genre
+          - kind
+          - label
+          - section
+          - class
+        description: The category of social media content, representing the type of product or service being promoted, such as fitness-related clothing and accessories.
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+      - name: INFLUENCER
+        synonyms:
+          - social_media_personality
+          - online_influencer
+          - social_media_figure
+          - content_creator
+          - key_opinion_leader
+          - thought_leader
+          - industry_expert
+          - brand_ambassador
+        description: The name of the social media influencer promoting the product or service.
+        expr: INFLUENCER
+        data_type: VARCHAR(16777216)
+      - name: PLATFORM
+        synonyms:
+          - channel
+          - medium
+          - site
+          - social_media_channel
+          - network
+          - outlet
+        description: The social media platform where the activity or engagement took place.
+        expr: PLATFORM
+        data_type: VARCHAR(16777216)
+    facts:
+      - name: MENTIONS
+        synonyms:
+          - citations
+          - references
+          - quotes
+          - allusions
+          - name_drops
+          - tags
+          - shoutouts
+          - credits
+          - acknowledgments
+        description: The number of times a brand, product, or keyword is mentioned on social media platforms.
+        expr: MENTIONS
+        data_type: NUMBER(38,0)
+    time_dimensions:
+      - name: DATE
+        synonyms:
+          - day
+          - timestamp
+          - calendar_date
+          - posting_date
+          - publication_date
+          - entry_date
+        description: Date on which social media data was collected or posted.
+        expr: DATE
+        data_type: DATE
+relationships:
+  - name: SALES_TO_PRODUCT
+    left_table: SALES
+    right_table: PRODUCTS
+    relationship_columns:
+      - left_column: PRODUCT_ID
+        right_column: PRODUCT_ID
+    relationship_type: many_to_one
+    join_type: inner
+  - name: MARKETING_TO_SOCIAL
+    left_table: SOCIAL_MEDIA
+    right_table: MARKETING_CAMPAIGN_METRICS
+    relationship_columns:
+      - left_column: CATEGORY
+        right_column: CATEGORY
+    relationship_type: many_to_one
+    join_type: inner
+verified_queries:
+  - name: sales
+    question: |+
+      Show me the trend of sales by product category between June 2025 and August 2025
+
+    use_as_onboarding_question: false
+    sql: WITH monthly_sales AS (SELECT p.category, DATE_TRUNC('MONTH', s.date) AS month, SUM(s.sales_amount) AS monthly_sales FROM sales AS s INNER JOIN products AS p ON s.product_id = p.product_id WHERE s.date >= '2025-06-01' AND s.date < '2025-09-01' GROUP BY p.category, DATE_TRUNC('MONTH', s.date)) SELECT category, month, monthly_sales FROM monthly_sales ORDER BY category, month
+    verified_by: D User
+    verified_at: 1752091901
+  $$
+);
