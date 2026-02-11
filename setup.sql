@@ -18,11 +18,6 @@
 --   - swt_csvformat
 --
 -- Stages:
---   - swt_marketing_data_stage
---   - swt_products_data_stage
---   - swt_sales_data_stage
---   - swt_social_media_data_stage
---   - swt_support_data_stage
 --   - semantic_models
 --
 -- Git Integration:
@@ -57,102 +52,114 @@ grant role snowflake_intelligence_admin to user identifier($current_user);
 alter user set default_role = snowflake_intelligence_admin;
 alter user set default_warehouse = dash_wh_si;
 
+use role accountadmin;
+create database if not exists snowflake_intelligence;
+create schema if not exists snowflake_intelligence.agents;
+grant usage on database snowflake_intelligence to role snowflake_intelligence_admin;
+grant usage on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
+grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
+
 use role snowflake_intelligence_admin;
 create or replace database dash_db_si;
 create or replace schema retail;
 create or replace warehouse dash_wh_si with warehouse_size='large';
 
-create database if not exists snowflake_intelligence;
-create schema if not exists snowflake_intelligence.agents;
-
-grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
-
 use database dash_db_si;
 use schema retail;
 use warehouse dash_wh_si;
 
-create or replace file format swt_csvformat  
-  skip_header = 1  
-  field_optionally_enclosed_by = '"'  
-  type = 'csv';  
+--## Skkipped line 72 to 153 as data ingested using HEVO data pipelines
+
+-- create or replace file format swt_csvformat  
+--   skip_header = 1  
+--   field_optionally_enclosed_by = '"'  
+--   type = 'csv';  
   
--- create table marketing_campaign_metrics and load data from s3 bucket
-create or replace stage swt_marketing_data_stage  
-  file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/marketing/';  
+-- -- create table marketing_campaign_metrics and load data from s3 bucket
+-- create or replace stage swt_marketing_data_stage  
+--   file_format = swt_csvformat  
+--   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/marketing/';  
   
-create or replace table marketing_campaign_metrics (
-  date date,
-  category varchar(16777216),
-  campaign_name varchar(16777216),
-  impressions number(38,0),
-  clicks number(38,0)
-);
+-- create or replace table marketing_campaign_metrics (
+--   date date,
+--   category varchar(16777216),
+--   campaign_name varchar(16777216),
+--   impressions number(38,0),
+--   clicks number(38,0)
+-- );
 
-copy into marketing_campaign_metrics  
-  from @swt_marketing_data_stage;
+-- copy into marketing_campaign_metrics  
+--   from @swt_marketing_data_stage;
 
--- create table products and load data from s3 bucket
-create or replace stage swt_products_data_stage  
-  file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/product/';  
+-- -- create table products and load data from s3 bucket
+-- create or replace stage swt_products_data_stage  
+--   file_format = swt_csvformat  
+--   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/product/';  
   
-create or replace table products (
-  product_id number(38,0),
-  product_name varchar(16777216),
-  category varchar(16777216)
-);
+-- create or replace table products (
+--   product_id number(38,0),
+--   product_name varchar(16777216),
+--   category varchar(16777216)
+-- );
 
-copy into products  
-  from @swt_products_data_stage;
+-- copy into products  
+--   from @swt_products_data_stage;
 
--- create table sales and load data from s3 bucket
-create or replace stage swt_sales_data_stage  
-  file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/sales/';  
+-- -- create table sales and load data from s3 bucket
+-- create or replace stage swt_sales_data_stage  
+--   file_format = swt_csvformat  
+--   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/sales/';  
   
-create or replace table sales (
-  date date,
-  region varchar(16777216),
-  product_id number(38,0),
-  units_sold number(38,0),
-  sales_amount number(38,2)
-);
+-- create or replace table sales (
+--   date date,
+--   region varchar(16777216),
+--   product_id number(38,0),
+--   units_sold number(38,0),
+--   sales_amount number(38,2)
+-- );
 
-copy into sales  
-  from @swt_sales_data_stage;
+-- copy into sales  
+--   from @swt_sales_data_stage;
 
--- create table social_media and load data from s3 bucket
-create or replace stage swt_social_media_data_stage  
-  file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/social_media/';  
+-- -- create table social_media and load data from s3 bucket
+-- create or replace stage swt_social_media_data_stage  
+--   file_format = swt_csvformat  
+--   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/social_media/';  
   
-create or replace table social_media (
-  date date,
-  category varchar(16777216),
-  platform varchar(16777216),
-  influencer varchar(16777216),
-  mentions number(38,0)
-);
+-- create or replace table social_media (
+--   date date,
+--   category varchar(16777216),
+--   platform varchar(16777216),
+--   influencer varchar(16777216),
+--   mentions number(38,0)
+-- );
 
-copy into social_media  
-  from @swt_social_media_data_stage;
+-- copy into social_media  
+--   from @swt_social_media_data_stage;
 
--- create table support_cases and load data from s3 bucket
-create or replace stage swt_support_data_stage  
-  file_format = swt_csvformat  
-  url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/support/';  
+-- -- create table support_cases and load data from s3 bucket
+-- create or replace stage swt_support_data_stage  
+--   file_format = swt_csvformat  
+--   url = 's3://sfquickstarts/sfguide_getting_started_with_snowflake_intelligence/support/';  
   
-create or replace table support_cases (
-  id varchar(16777216),
-  title varchar(16777216),
-  product varchar(16777216),
-  transcript varchar(16777216),
-  date date
-);
+-- create or replace table support_cases (
+--   id varchar(16777216),
+--   title varchar(16777216),
+--   product varchar(16777216),
+--   transcript varchar(16777216),
+--   date date
+-- );
 
-copy into support_cases  
-  from @swt_support_data_stage;
+-- copy into support_cases  
+--   from @swt_support_data_stage;
+
+-- Check Records exist in all base tables
+SELECT 
+  TABLE_NAME,
+  ROW_COUNT
+FROM DASH_DB_SI.INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_SCHEMA = 'RETAIL' 
+AND TABLE_NAME ILIKE 'HEVO%';
 
 create or replace stage semantic_models encryption = (type = 'snowflake_sse') directory = ( enable = true );
 
@@ -212,3 +219,9 @@ $$;
 ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
 
 select 'Congratulations! Snowflake Intelligence setup has completed successfully!' as status;
+
+-- Next Steps:
+-- 1. Create Semantic Model by executing semantic_view.sql
+-- 2. Create Snowflake Cortex Search Service by executing cortex_search_service.sql
+-- 3. Create Snowflake Cortex Agent by executing cortex_agent.sql
+
