@@ -57,15 +57,17 @@ grant role snowflake_intelligence_admin to user identifier($current_user);
 alter user set default_role = snowflake_intelligence_admin;
 alter user set default_warehouse = dash_wh_si;
 
+-- agents schema is created as ACCOUNTADMIN so this also works when the database already exists
+create database if not exists snowflake_intelligence;
+create schema if not exists snowflake_intelligence.agents;
+grant usage on database snowflake_intelligence to role snowflake_intelligence_admin;
+grant usage on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
+grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
+
 use role snowflake_intelligence_admin;
 create or replace database dash_db_si;
 create or replace schema retail;
 create or replace warehouse dash_wh_si with warehouse_size='large';
-
-create database if not exists snowflake_intelligence;
-create schema if not exists snowflake_intelligence.agents;
-
-grant create agent on schema snowflake_intelligence.agents to role snowflake_intelligence_admin;
 
 use database dash_db_si;
 use schema retail;
@@ -174,7 +176,7 @@ copy files into @semantic_models
 create or replace notification integration email_integration
   type=email
   enabled=true
-  default_subject = 'snowflake intelligence';
+  default_subject = 'Snowflake CoWork';
 
 create or replace procedure send_email(
     recipient_email varchar,
@@ -190,25 +192,27 @@ as
 $$
 def send_email(session, recipient_email, subject, body):
     try:
-        # Escape single quotes in the body
-        escaped_body = body.replace("'", "''")
-        
-        # Execute the system procedure call
-        session.sql(f"""
-            CALL SYSTEM$SEND_EMAIL(
-                'email_integration',
-                '{recipient_email}',
-                '{subject}',
-                '{escaped_body}',
-                'text/html'
-            )
-        """).collect()
+        # Use bind parameters so agent-supplied values can't alter the SQL
+        session.sql(
+            "CALL SYSTEM$SEND_EMAIL('email_integration', ?, ?, ?, 'text/html')",
+            params=[recipient_email, subject, body]
+        ).collect()
         
         return "Email sent successfully"
     except Exception as e:
         return f"Error sending email: {str(e)}"
 $$;
 
-ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
+-- Snowflake CoWork object and grants (requires ACCOUNTADMIN)
+use role accountadmin;
 
-select 'Congratulations! Snowflake Intelligence setup has completed successfully!' as status;
+create snowflake intelligence if not exists snowflake_intelligence_object_default;
+grant usage on snowflake intelligence snowflake_intelligence_object_default to role snowflake_intelligence_admin;
+grant create semantic view on schema dash_db_si.retail to role snowflake_intelligence_admin;
+
+-- OPTIONAL: enable cross-region inference if supported models aren't available in your region
+-- alter account set cortex_enabled_cross_region = 'ANY_REGION';
+
+use role snowflake_intelligence_admin;
+
+select 'Congratulations! Snowflake CoWork setup has completed successfully!' as status;
